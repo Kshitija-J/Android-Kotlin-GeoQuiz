@@ -22,13 +22,13 @@ class MainActivity : AppCompatActivity() {
 
 
     private val questionBank = listOf(
-        Question(R.string.question_australia, true),
-        Question(R.string.question_oceans, true),
-        Question(R.string.question_mideast, false),
-        Question(R.string.question_africa, false),
-        Question(R.string.question_americas, true),
-        Question(R.string.question_asia, true),
-        Question(R.string.question_india, true),
+        Question(R.string.question_australia, true,false),
+        Question(R.string.question_oceans, true,false),
+        Question(R.string.question_mideast, false,false),
+        Question(R.string.question_africa, false,false),
+        Question(R.string.question_americas, true,false),
+        Question(R.string.question_asia, true,false),
+        Question(R.string.question_india, true,false),
     )
 
     private var currentIndex = 0
@@ -39,7 +39,6 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         cheatButton = findViewById(R.id.cheat_button)
-//        setContentView(R.layout.activity_main)
 
         if(quizViewModel.cCount > 0) {
             binding.cheatNumber.text = "You have ${quizViewModel.cCount} attempts left"
@@ -87,7 +86,7 @@ class MainActivity : AppCompatActivity() {
                 binding.cheatNumber.text = "You have no more attempts left"
                 binding.cheatButton.isEnabled = false
             }
-            quizViewModel.isCheater =
+            questionBank[currentIndex].isCheatUsed =
                 data?.getBooleanExtra(EXTRA_ANSWER_SHOWN, false) ?: false
         }
     }
@@ -129,12 +128,11 @@ class MainActivity : AppCompatActivity() {
 
 
         val messageResId = when {
-            quizViewModel.isCheater -> R.string.judgment_toast
+            questionBank[currentIndex].isCheatUsed -> R.string.judgment_toast
             userAnswer == correctAnswer -> R.string.correct_toast
             else -> R.string.incorrect_toast
         }
 
-//        Toast.makeText(this, "LOOOOOL", Toast.LENGTH_SHORT).show()
         Snackbar.make(binding.root, messageResId , Snackbar.LENGTH_SHORT).show()
     }
 }
